@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔬 داش بورد VVB الذكي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cGreen: #089981;
+            --cRed: #f23645;
+            --cYellow: #ffd700;
+            --cBlack: #0a0a0a;
+            --cRow: #16161a;
+            --cBlue: #2962ff;
+            --cNavy: #0d2d82;
+            --cOrgHd: #964b0a;
+            --cOrgFr: #ff9800;
+            --cPurple: #581878;
+            --cTeal: #00695c;
+            --cGold: #785a00;
+            --bg: #0d1117;
+            --card: #161b22;
+            --text: #e6edf3;
+            --border: #30363d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 80px;
+        }
+
+        /* Login Screen Styles */
+        .login-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg);
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .login-logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .login-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .login-subtitle {
+            font-size: 1rem;
+            color: #f0b429;
+            margin-bottom: 2rem;
+            font-weight: 500;
+        }
+
+        .login-input-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem;
+            padding-left: 3rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: #f0b429;
+        }
+
+        .login-input::placeholder {
+            color: #676879;
+        }
+
+        .toggle-password {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            font-size: 1.2rem;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .toggle-password:hover {
+            opacity: 1;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: #f0b429;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+        }
+
+        .login-btn:hover {
+            background: #d99d1f;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(240, 180, 41, 0.4);
+        }
+
+        .login-error {
+            display: none;
+            background: var(--cRed);
+            color: white;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        /* Dashboard Styles */
+        .dashboard {
+            display: none;
+        }
+
+        .dashboard.show {
+            display: block;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--cNavy) 0%, var(--cPurple) 100%);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .header-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 8px;
+            color: white;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .header-center {
+            flex: 1;
+        }
+        
+        .header h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-bottom: 0.3rem;
+        }
+        
+        .header .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badges {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+        
+        .badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .badge-gold {
+            background: var(--cGold);
+            color: white;
+        }
+        
+        .badge-gray {
+            background: #30363d;
+            color: var(--text);
+        }
+        
+        .last-update {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+        
+        .market-toggle {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            margin-top: 0.75rem;
+        }
+        
+        .market-btn {
+            padding: 0.5rem 1.5rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .market-btn.active {
+            background: white;
+            color: var(--cNavy);
+            border-color: white;
+        }
+        
+        .controls {
+            background: var(--card);
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .input-row input {
+            flex: 1;
+            padding: 0.75rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background: var(--cGold);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #9d7200;
+        }
+        
+        .btn-refresh {
+            background: var(--cGold);
+            color: white;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+        
+        .chips {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+        
+        .chip {
+            padding: 0.5rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        
+        .chip:hover {
+            background: var(--cBlue);
+            border-color: var(--cBlue);
+        }
+        
+        .mode-selector {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+        
+        .mode-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+        
+        .mode-btn.active {
+            background: var(--cBlue);
+            border-color: var(--cBlue);
+        }
+        
+        .progress-bar {
+            display: none;
+            background: var(--cNavy);
+            padding: 1rem;
+            margin: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .progress-bar.show {
+            display: block;
+        }
+        
+        .progress-fill {
+            height: 8px;
+            background: var(--cGold);
+            border-radius: 4px;
+            transition: width 0.3s;
+            margin-top: 0.5rem;
+        }
+        
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+        
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-delete {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            background: var(--cRed);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            z-index: 10;
+            transition: all 0.3s;
+        }
+        
+        .card-delete:hover {
+            background: #d32f2f;
+            transform: scale(1.1);
+        }
+        
+        .card-row {
+            display: grid;
+            grid-template-columns: 1fr auto 2fr;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+        
+        .card-row.header {
+            background: var(--cNavy);
+            font-weight: 700;
+        }
+        
+        .card-row.header2 {
+            background: var(--cBlack);
+            font-weight: 700;
+        }
+        
+        .card-row.header3 {
+            background: var(--cBlack);
+        }
+        
+        .card-row.header4 {
+            background: var(--cBlue);
+            font-weight: 700;
+        }
+        
+        .card-row.green {
+            background: var(--cGreen);
+        }
+        
+        .card-row.red {
+            background: var(--cRed);
+        }
+        
+        .card-row.purple {
+            background: var(--cPurple);
+        }
+        
+        .card-row.gold {
+            background: var(--cGold);
+            font-weight: 700;
+        }
+        
+        .card-row.result {
+            background: var(--cGold);
+            grid-template-columns: 1fr;
+            text-align: center;
+            font-weight: 700;
+        }
+        
+        .card-row.result-score {
+            grid-template-columns: auto 1fr;
+            font-size: 1.1rem;
+            font-weight: 900;
+        }
+        
+        .card-row.tiny {
+            font-size: 0.7rem;
+            opacity: 0.8;
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
+        
+        .card-cell {
+            padding: 0.5rem;
+            border-left: 1px solid var(--border);
+        }
+        
+        .card-cell:last-child {
+            border-left: none;
+        }
+        
+        .card-cell.center {
+            text-align: center;
+        }
+        
+        .sub-panels {
+            display: flex;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .sub-panel {
+            flex: 1;
+            min-width: 150px;
+            border: 2px solid;
+            border-radius: 8px;
+            padding: 0.5rem;
+            font-size: 0.75rem;
+        }
+        
+        .sub-panel.blue {
+            border-color: var(--cBlue);
+        }
+        
+        .sub-panel.teal {
+            border-color: var(--cTeal);
+        }
+        
+        .sub-panel.orange {
+            border-color: var(--cOrgFr);
+        }
+        
+        .sub-panel-header {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 0.25rem;
+            text-align: center;
+        }
+        
+        .sub-panel-values {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 0.25rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .sub-panel-text {
+            font-size: 0.7rem;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+        
+        .sub-panel-bottom {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 0.25rem;
+            font-size: 0.7rem;
+            text-align: center;
+        }
+        
+        .buying-power {
+            background: var(--cTeal);
+            padding: 0.75rem;
+            margin: 0.5rem;
+            border-radius: 8px;
+        }
+        
+        .bp-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .bp-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .bp-conditions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .bp-cond {
+            font-size: 0.75rem;
+        }
+        
+        .smart-analyst {
+            padding: 0.75rem;
+            margin: 0.5rem;
+            border-radius: 8px;
+        }
+        
+        .sa-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 0.5rem;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+        
+        .sa-row:last-child {
+            margin-bottom: 0;
+        }
+        
+        .sa-indicators {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .summary {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border-top: 2px solid var(--border);
+            padding: 1rem;
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            font-weight: 700;
+            box-shadow: 0 -4px 12px rgba(0,0,0,0.3);
+        }
+        
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Change Password Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 0.75rem;
+            background: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: #f0b429;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .modal-btn-save {
+            background: #f0b429;
+            color: white;
+        }
+
+        .modal-btn-save:hover {
+            background: #d99d1f;
+        }
+
+        .modal-btn-cancel {
+            background: #30363d;
+            color: var(--text);
+        }
+
+        .modal-btn-cancel:hover {
+            background: #484f58;
+        }
+
+        .modal-message {
+            display: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .modal-message.show {
+            display: block;
+        }
+
+        .modal-message.success {
+            background: var(--cGreen);
+            color: white;
+        }
+
+        .modal-message.error {
+            background: var(--cRed);
+            color: white;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.4rem;
+            }
+
+            .header-top {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .header-left {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .sub-panels {
+                flex-direction: column;
+            }
+            
+            .summary {
+                flex-wrap: wrap;
+                gap: 0.75rem;
+            }
+
+            .login-title {
+                font-size: 1.4rem;
+            }
+
+            .login-subtitle {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">🔬</div>
+            <h1 class="login-title">داش بورد VVB الذكي</h1>
+            <p class="login-subtitle">بطاقة المهندس عادل المزيد</p>
+            <form id="loginForm" onsubmit="return false;">
+                <div class="login-input-group">
+                    <input 
+                        type="password" 
+                        id="loginPassword" 
+                        class="login-input" 
+                        placeholder="أدخل كلمة السر..."
+                        autocomplete="current-password"
+                    >
+                    <button type="button" class="toggle-password" onclick="toggleLoginPassword()">👁️</button>
+                </div>
+                <button type="submit" class="login-btn" onclick="attemptLogin()">دخول</button>
+                <div class="login-error" id="loginError">❌ كلمة السر غير صحيحة</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <div class="header-top">
+                <div class="header-left">
+                    <button class="header-btn" onclick="openChangePasswordModal()">🔑 تغيير كلمة السر</button>
+                    <button class="header-btn" onclick="logout()">🚪 خروج</button>
+                </div>
+                <div class="header-center">
+                    <h1>🔬 داش بورد VVB الذكي</h1>
+                    <div class="subtitle">بطاقة المهندس عادل المزيد</div>
+                    <div class="badges">
+                        <span class="badge badge-gold">📊 بروفايل فوليوم</span>
+                        <span class="badge badge-gold">📈 فيواب ذكي</span>
+                        <span class="badge badge-gold">💪 قوة شرائية</span>
+                        <span class="badge badge-gray">🤖 تحليل آلي</span>
+                    </div>
+                    <div class="last-update" id="lastUpdate">آخر تحديث: --</div>
+                </div>
+                <div style="width: 200px;"></div>
+            </div>
+            <div class="market-toggle">
+                <button class="market-btn active" data-market="us" onclick="switchMarket('us')">🇺🇸 السوق الأمريكي</button>
+                <button class="market-btn" data-market="sa" onclick="switchMarket('sa')">🇸🇦 السوق السعودي</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="input-row">
+                <input type="text" id="symbolInput" placeholder="أدخل رمز السهم..." onkeypress="if(event.key==='Enter')addStock()">
+                <button class="btn btn-primary" onclick="addStock()">➕ إضافة</button>
+            </div>
+            <div class="chips" id="quickChips"></div>
+            <div class="mode-selector">
+                <button class="mode-btn active" data-mode="daily" onclick="switchMode('daily')">يومي</button>
+                <button class="mode-btn" data-mode="weekly" onclick="switchMode('weekly')">أسبوعي</button>
+                <button class="mode-btn" data-mode="monthly" onclick="switchMode('monthly')">شهري</button>
+            </div>
+            <button class="btn btn-refresh" onclick="refreshAll()">🔄 تحديث الكل</button>
+        </div>
+
+        <div class="progress-bar" id="progressBar">
+            <div>جاري التحميل... <span id="progressText">0%</span></div>
+            <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+
+        <div class="summary">
+            <div class="summary-item">
+                <span style="color: var(--cGreen);">🟢</span>
+                <span id="summaryGreen">0</span>
+            </div>
+            <div class="summary-item">
+                <span style="color: var(--cYellow);">🟡</span>
+                <span id="summaryYellow">0</span>
+            </div>
+            <div class="summary-item">
+                <span style="color: var(--cRed);">🔴</span>
+                <span id="summaryRed">0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <h2 class="modal-title">🔑 تغيير كلمة السر</h2>
+            <div class="modal-message" id="modalMessage"></div>
+            <input 
+                type="password" 
+                id="currentPassword" 
+                class="modal-input" 
+                placeholder="كلمة السر الحالية"
+                autocomplete="current-password"
+            >
+            <input 
+                type="password" 
+                id="newPassword" 
+                class="modal-input" 
+                placeholder="كلمة السر الجديدة"
+                autocomplete="new-password"
+            >
+            <input 
+                type="password" 
+                id="confirmPassword" 
+                class="modal-input" 
+                placeholder="تأكيد كلمة السر الجديدة"
+                autocomplete="new-password"
+            >
+            <div class="modal-buttons">
+                <button class="modal-btn modal-btn-save" onclick="saveNewPassword()">حفظ</button>
+                <button class="modal-btn modal-btn-cancel" onclick="closeChangePasswordModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============ PASSWORD MANAGEMENT ============
+        const DEFAULT_PASSWORD = "vvb2026";
+
+        function getPassword() {
+            return localStorage.getItem('vvb_password') || DEFAULT_PASSWORD;
+        }
+
+        function checkPassword(input) {
+            return input === getPassword();
+        }
+
+        function isLoggedIn() {
+            return sessionStorage.getItem('vvb_logged_in') === 'true';
+        }
+
+        function login(password) {
+            if(checkPassword(password)) {
+                sessionStorage.setItem('vvb_logged_in', 'true');
+                showDashboard();
+                return true;
+            }
+            return false;
+        }
+
+        function logout() {
+            sessionStorage.removeItem('vvb_logged_in');
+            showLogin();
+        }
+
+        function showLogin() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('dashboard').classList.remove('show');
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        function showDashboard() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('dashboard').classList.add('show');
+            init();
+        }
+
+        function toggleLoginPassword() {
+            const input = document.getElementById('loginPassword');
+            const btn = event.target;
+            if(input.type === 'password') {
+                input.type = 'text';
+                btn.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                btn.textContent = '👁️';
+            }
+        }
+
+        function attemptLogin() {
+            const password = document.getElementById('loginPassword').value;
+            if(login(password)) {
+                return true;
+            } else {
+                document.getElementById('loginError').classList.add('show');
+                return false;
+            }
+        }
+
+        // Enter key support for login
+        document.addEventListener('DOMContentLoaded', function() {
+            const loginInput = document.getElementById('loginPassword');
+            if(loginInput) {
+                loginInput.addEventListener('keypress', function(e) {
+                    if(e.key === 'Enter') {
+                        attemptLogin();
+                    }
+                });
+            }
+        });
+
+        function openChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.add('show');
+            document.getElementById('currentPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            document.getElementById('modalMessage').classList.remove('show', 'success', 'error');
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById('changePasswordModal').classList.remove('show');
+        }
+
+        function saveNewPassword() {
+            const current = document.getElementById('currentPassword').value;
+            const newPass = document.getElementById('newPassword').value;
+            const confirm = document.getElementById('confirmPassword').value;
+            const messageEl = document.getElementById('modalMessage');
+
+            // Validate current password
+            if(!checkPassword(current)) {
+                messageEl.textContent = '❌ كلمة السر الحالية غير صحيحة';
+                messageEl.className = 'modal-message show error';
+                return;
+            }
+
+            // Validate new password length
+            if(newPass.length < 4) {
+                messageEl.textContent = '❌ كلمة السر الجديدة يجب أن تكون 4 أحرف على الأقل';
+                messageEl.className = 'modal-message show error';
+                return;
+            }
+
+            // Validate passwords match
+            if(newPass !== confirm) {
+                messageEl.textContent = '❌ كلمة السر الجديدة غير متطابقة';
+                messageEl.className = 'modal-message show error';
+                return;
+            }
+
+            // Save new password
+            localStorage.setItem('vvb_password', newPass);
+            messageEl.textContent = '✅ تم تغيير كلمة السر بنجاح';
+            messageEl.className = 'modal-message show success';
+
+            // Close modal after 2 seconds
+            setTimeout(() => {
+                closeChangePasswordModal();
+            }, 2000);
+        }
+
+        // ============ DASHBOARD CODE ============
+        const API_KEY = '92b94e6ce8e34351bb5f0dc012625602';
+        let currentMarket = 'us';
+        let currentMode = 'daily';
+
+        const quickStocks = {
+            us: ['SPY', 'QQQ', 'AAPL', 'TSLA', 'NVDA', 'MSFT', 'GOOGL', 'AMZN', 'META'],
+            sa: ['2222', '1120', '2010', '2030', '1211', '2020', '4030', '7010', '2380']
+        };
+
+        async function fetchStockData(symbol, isSaudi = false) {
+            const exchange = isSaudi ? '&exchange=XSAU' : '';
+            const url = `https://api.twelvedata.com/time_series?symbol=${symbol}${exchange}&interval=1day&outputsize=66&apikey=${API_KEY}`;
+            const res = await fetch(url, { signal: AbortSignal.timeout(15000) });
+            const data = await res.json();
+            if(data.status === 'error') throw new Error(data.message);
+            const all = data.values.map(v => ({
+                datetime: v.datetime,
+                open: parseFloat(v.open), 
+                high: parseFloat(v.high),
+                low: parseFloat(v.low), 
+                close: parseFloat(v.close),
+                volume: parseInt(v.volume) || 0
+            })).reverse();
+            return {
+                all,
+                daily: all.slice(-1),
+                weekly: all.slice(-5),
+                monthly: all.slice(-22),
+                currentPrice: all[all.length-1].close,
+                prevClose: all.length > 1 ? all[all.length-2].close : all[0].close
+            };
+        }
+
+        function saveCache(key, data) {
+            const cache = JSON.parse(localStorage.getItem('vvb_cache_v3') || '{}');
+            cache[key] = { data, ts: Date.now() };
+            localStorage.setItem('vvb_cache_v3', JSON.stringify(cache));
+        }
+
+        function loadCache(key) {
+            const cache = JSON.parse(localStorage.getItem('vvb_cache_v3') || '{}');
+            const e = cache[key];
+            return e && Date.now() - e.ts < 1800000 ? e.data : null;
+        }
+
+        function calcVWAP(data) {
+            let tpv=0, vol=0;
+            data.forEach(d => { 
+                if(d.volume>0) { 
+                    tpv+=((d.high+d.low+d.close)/3)*d.volume; 
+                    vol+=d.volume; 
+                } 
+            });
+            return vol>0 ? tpv/vol : data[data.length-1]?.close||0;
+        }
+
+        function calcPOC(data, nBins=60) {
+            if(!data.length) return 0;
+            const hi=Math.max(...data.map(d=>d.high)), lo=Math.min(...data.map(d=>d.low));
+            if(hi===lo) return hi;
+            const step=(hi-lo)/nBins, bins=new Array(nBins).fill(0);
+            data.forEach(d => {
+                const b1=Math.max(0,Math.min(nBins-1,Math.floor((d.low-lo)/step)));
+                const b2=Math.max(0,Math.min(nBins-1,Math.floor((d.high-lo)/step)));
+                const share=d.volume/Math.max(b2-b1+1,1);
+                for(let b=b1;b<=b2;b++) bins[b]+=share;
+            });
+            const best=bins.indexOf(Math.max(...bins));
+            return lo+(best+0.5)*step;
+        }
+
+        function calcDelta(data) {
+            return data.reduce((sum,d) => {
+                const rng=Math.max(d.high-d.low,0.0001);
+                return sum+d.volume*((d.close-d.low)-(d.high-d.close))/rng;
+            },0);
+        }
+
+        function calcVolRatio(data) {
+            const vols=data.map(d=>d.volume).filter(v=>v>0);
+            if(vols.length<2) return 1;
+            const avg=vols.reduce((a,b)=>a+b,0)/vols.length;
+            return avg>0 ? vols[vols.length-1]/avg : 1;
+        }
+
+        function calcBuyPct(data) {
+            let buy=0,total=0;
+            data.forEach(d => { 
+                const rng=Math.max(d.high-d.low,0.0001); 
+                buy+=d.volume*(d.close-d.low)/rng; 
+                total+=d.volume; 
+            });
+            return total>0 ? (buy/total*100).toFixed(1) : '50.0';
+        }
+
+        function fVol(v) {
+            const av=Math.abs(v);
+            if(av>=1e9) return (v/1e9).toFixed(2)+'B';
+            if(av>=1e6) return (v/1e6).toFixed(2)+'M';
+            if(av>=1e3) return (v/1e3).toFixed(2)+'K';
+            return v.toFixed(0);
+        }
+
+        function calcVVB(price, prevClose, vwapD, vwapW, vwapM, pocD, volRat, deltaD, marketUp) {
+            const c1=price>pocD, c2=price>vwapD, c3=price>vwapD;
+            const c4=price>vwapW, c5=price>vwapM, c6=volRat>1;
+            const c7=price>prevClose;
+            const dist=vwapD>0?Math.abs((price-vwapD)/vwapD*100):999;
+            const c8=dist<=2.0, c9=marketUp, c10=deltaD>0;
+            const score=[c1,c2,c3,c4,c5,c6,c7,c8,c9,c10].filter(Boolean).length;
+            return {
+                score, dist, c1,c2,c3,c4,c5,c6,c7,c8,c9,c10,
+                verdict: score>=8?"فرص الصفقة — السهم مرتفع":score>=6?"السهم إيجابي":score>=4?"السهم محايد":"السهم سلبي جداً",
+                ln1: score>=8?"فوق كل المستويات بحجم وقوة شرائية":score>=6?"فوق أغلب المستويات — اتجاه إيجابي":score>=4?"وضع محايد — انتظر اختراق الفيواب":"تحت مستويات التحكم — الابتعاد أسلم",
+                ln2: c8?"السعر قرب الفيواب — منطقة دخول مقبولة":c2?"السهم مرتفع — انتظر تصحيحاً للفيواب":"راقب اختراق الفيواب — إشارة محتملة",
+                adv: score>=8?"صاعد مستقر — انتظر التراجعات للفيواب":score>=6?"السهم فوق دعمه — راقب استمرار الحجم":score>=4?"عند دعم مهم — ارتداد محتمل — راقب":"تحت مستويات التحكم — لا تصطد القاع"
+            };
+        }
+
+        function getStocks() {
+            const key = `vvb_stocks_v3_${currentMarket}`;
+            const stored = localStorage.getItem(key);
+            if(stored) return JSON.parse(stored);
+            return currentMarket === 'us' ? ['SPY', 'AAPL'] : ['2222', '1120'];
+        }
+
+        function saveStocks(stocks) {
+            const key = `vvb_stocks_v3_${currentMarket}`;
+            localStorage.setItem(key, JSON.stringify(stocks));
+        }
+
+        function addStock() {
+            const input = document.getElementById('symbolInput');
+            const symbol = input.value.trim().toUpperCase();
+            if(!symbol) return;
+            const stocks = getStocks();
+            if(!stocks.includes(symbol)) {
+                stocks.push(symbol);
+                saveStocks(stocks);
+                renderCards();
+            }
+            input.value = '';
+        }
+
+        function deleteStock(symbol) {
+            const stocks = getStocks().filter(s => s !== symbol);
+            saveStocks(stocks);
+            renderCards();
+        }
+
+        function switchMarket(market) {
+            currentMarket = market;
+            document.querySelectorAll('.market-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.market === market);
+            });
+            renderQuickChips();
+            renderCards();
+        }
+
+        function switchMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.mode === mode);
+            });
+            renderCards();
+        }
+
+        function renderQuickChips() {
+            const container = document.getElementById('quickChips');
+            container.innerHTML = quickStocks[currentMarket].map(s => 
+                `<div class="chip" onclick="quickAdd('${s}')">${s}</div>`
+            ).join('');
+        }
+
+        function quickAdd(symbol) {
+            const stocks = getStocks();
+            if(!stocks.includes(symbol)) {
+                stocks.push(symbol);
+                saveStocks(stocks);
+                renderCards();
+            }
+        }
+
+        async function refreshAll() {
+            const stocks = getStocks();
+            const progressBar = document.getElementById('progressBar');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            progressBar.classList.add('show');
+            
+            for(let i = 0; i < stocks.length; i++) {
+                const symbol = stocks[i];
+                const cacheKey = `${currentMarket}_${symbol}`;
+                try {
+                    const data = await fetchStockData(symbol, currentMarket === 'sa');
+                    saveCache(cacheKey, data);
+                } catch(e) {
+                    console.error(`Error fetching ${symbol}:`, e);
+                }
+                const pct = Math.round((i + 1) / stocks.length * 100);
+                progressFill.style.width = pct + '%';
+                progressText.textContent = pct + '%';
+            }
+            
+            progressBar.classList.remove('show');
+            renderCards();
+            updateLastUpdate();
+        }
+
+        function updateLastUpdate() {
+            const now = new Date();
+            const time = now.toLocaleTimeString('ar-SA', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('lastUpdate').textContent = `آخر تحديث: ${time}`;
+        }
+
+        async function renderCards() {
+            const stocks = getStocks();
+            const container = document.getElementById('cardsGrid');
+            container.innerHTML = '';
+
+            let greenCount = 0, yellowCount = 0, redCount = 0;
+
+            for(const symbol of stocks) {
+                const cacheKey = `${currentMarket}_${symbol}`;
+                let stockData = loadCache(cacheKey);
+                
+                if(!stockData) {
+                    try {
+                        stockData = await fetchStockData(symbol, currentMarket === 'sa');
+                        saveCache(cacheKey, stockData);
+                    } catch(e) {
+                        container.innerHTML += `
+                            <div class="card">
+                                <button class="card-delete" onclick="deleteStock('${symbol}')">×</button>
+                                <div class="card-row header">
+                                    <div class="card-cell">${symbol}</div>
+                                    <div class="card-cell center">❌</div>
+                                    <div class="card-cell">خطأ في التحميل</div>
+                                </div>
+                            </div>
+                        `;
+                        continue;
+                    }
+                }
+
+                const modeData = stockData[currentMode];
+                const price = stockData.currentPrice;
+                const prevClose = stockData.prevClose;
+                const change = price - prevClose;
+                const changePct = (change / prevClose * 100).toFixed(2);
+
+                const vwapD = calcVWAP(stockData.daily);
+                const vwapW = calcVWAP(stockData.weekly);
+                const vwapM = calcVWAP(stockData.monthly);
+                const pocD = calcPOC(modeData);
+                const volRat = calcVolRatio(modeData);
+                const deltaD = calcDelta(modeData);
+                const buyPct = calcBuyPct(modeData);
+
+                // Market direction (SPY for US, 2222 for SA)
+                const marketSymbol = currentMarket === 'us' ? 'SPY' : '2222';
+                let marketUp = true;
+                if(symbol !== marketSymbol) {
+                    const marketKey = `${currentMarket}_${marketSymbol}`;
+                    let marketData = loadCache(marketKey);
+                    if(marketData) {
+                        marketUp = marketData.currentPrice > marketData.prevClose;
+                    }
+                }
+
+                const vvb = calcVVB(price, prevClose, vwapD, vwapW, vwapM, pocD, volRat, deltaD, marketUp);
+
+                if(vvb.score >= 8) greenCount++;
+                else if(vvb.score >= 6) yellowCount++;
+                else redCount++;
+
+                const scoreColor = vvb.score >= 8 ? 'var(--cGreen)' : vvb.score >= 6 ? 'var(--cYellow)' : 'var(--cRed)';
+                const priceColor = change >= 0 ? 'var(--cGreen)' : 'var(--cRed)';
+                const changeSign = change >= 0 ? '+' : '';
+
+                const modeLabel = currentMode === 'daily' ? 'يومي' : currentMode === 'weekly' ? 'أسبوعي' : 'شهري';
+                const marketLabel = currentMarket === 'us' ? 'أمريكي' : 'سعودي';
+
+                const lastDate = modeData[modeData.length - 1]?.datetime || '--';
+                const dayName = new Date(lastDate).toLocaleDateString('ar-SA', { weekday: 'long' });
+
+                const card = `
+                    <div class="card">
+                        <button class="card-delete" onclick="deleteStock('${symbol}')">×</button>
+                        
+                        <div class="card-row header">
+                            <div class="card-cell">VVB</div>
+                            <div class="card-cell center">📋</div>
+                            <div class="card-cell">البطاقة الفنية</div>
+                        </div>
+
+                        <div class="card-row header2">
+                            <div class="card-cell" style="color: ${priceColor}; font-size: 1.1rem;">${price.toFixed(2)}</div>
+                            <div class="card-cell center">${symbol}</div>
+                            <div class="card-cell">${symbol}</div>
+                        </div>
+
+                        <div class="card-row header3">
+                            <div class="card-cell">${lastDate}</div>
+                            <div class="card-cell center">📅</div>
+                            <div class="card-cell">${dayName} — ${marketLabel}</div>
+                        </div>
+
+                        <div class="card-row header4">
+                            <div class="card-cell">${modeLabel}</div>
+                            <div class="card-cell center"></div>
+                            <div class="card-cell">التحليل</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c1 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c1 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">POC</div>
+                            <div class="card-cell">السعر ${vvb.c1 ? 'فوق' : 'تحت'} نقطة التحكم</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c2 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c2 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">VWAP</div>
+                            <div class="card-cell">السعر ${vvb.c2 ? 'فوق' : 'تحت'} الفيواب اليومي</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c3 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c3 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">VWAP</div>
+                            <div class="card-cell">السعر ${vvb.c3 ? 'فوق' : 'تحت'} الفيواب اليومي</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c4 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c4 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">VWAP</div>
+                            <div class="card-cell">السعر ${vvb.c4 ? 'فوق' : 'تحت'} الفيواب الأسبوعي</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c5 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c5 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">VWAP</div>
+                            <div class="card-cell">السعر ${vvb.c5 ? 'فوق' : 'تحت'} الفيواب الشهري</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c6 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c6 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">VOL</div>
+                            <div class="card-cell">الحجم ${vvb.c6 ? 'أعلى' : 'أقل'} من المتوسط</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c7 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c7 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">PRICE</div>
+                            <div class="card-cell">السعر ${vvb.c7 ? 'أعلى' : 'أقل'} من الإغلاق السابق</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c8 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c8 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">DIST</div>
+                            <div class="card-cell">المسافة من الفيواب ${vvb.dist.toFixed(2)}%</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c9 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c9 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">MKT</div>
+                            <div class="card-cell">السوق ${vvb.c9 ? 'صاعد' : 'هابط'}</div>
+                        </div>
+
+                        <div class="card-row ${vvb.c10 ? 'green' : 'red'}">
+                            <div class="card-cell">${vvb.c10 ? '✅' : '❌'}</div>
+                            <div class="card-cell center">DELTA</div>
+                            <div class="card-cell">الدلتا ${vvb.c10 ? 'إيجابي' : 'سلبي'}</div>
+                        </div>
+
+                        <div class="card-row purple">
+                            <div class="card-cell" colspan="3">🧠 التحليل الفني الذكي</div>
+                        </div>
+
+                        <div class="card-row purple">
+                            <div class="card-cell" style="grid-column: 1 / -1; display: flex; justify-content: center; gap: 0.5rem;">
+                                <span>📊 بروفايل فوليوم</span>
+                                <span>📈 فيواب</span>
+                                <span>💪 قوة شرائية</span>
+                            </div>
+                        </div>
+
+                        <div class="card-row purple">
+                            <div class="card-cell" style="grid-column: 1 / -1;">${vvb.ln1}</div>
+                        </div>
+
+                        <div class="card-row purple">
+                            <div class="card-cell" style="grid-column: 1 / -1;">${vvb.ln2}</div>
+                        </div>
+
+                        <div class="card-row result">
+                            <div class="card-cell">النتيجة الإجمالية</div>
+                        </div>
+
+                        <div class="card-row result-score" style="background: ${scoreColor};">
+                            <div class="card-cell center" style="font-size: 2rem;">${vvb.score}/10</div>
+                            <div class="card-cell">${vvb.verdict}</div>
+                        </div>
+
+                        <div class="card-row tiny">
+                            <div class="card-cell">تحليل آلي — بطاقة المهندس عادل المزيد</div>
+                        </div>
+
+                        <div class="sub-panels">
+                            <div class="sub-panel blue">
+                                <div class="sub-panel-header">
+                                    <div>يومي</div>
+                                    <div>أسبوعي</div>
+                                    <div>شهري</div>
+                                    <div>🔵</div>
+                                </div>
+                                <div class="sub-panel-values">
+                                    <div>${vwapD.toFixed(2)}</div>
+                                    <div>${vwapW.toFixed(2)}</div>
+                                    <div>${vwapM.toFixed(2)}</div>
+                                </div>
+                                <div class="sub-panel-text">الفيواب الذكي</div>
+                                <div class="sub-panel-bottom">
+                                    <div>POC</div>
+                                    <div>📍</div>
+                                    <div>${pocD.toFixed(2)}</div>
+                                </div>
+                            </div>
+
+                            <div class="sub-panel teal">
+                                <div class="sub-panel-header">
+                                    <div>الحالي</div>
+                                    <div>المتوسط</div>
+                                    <div>النسبة</div>
+                                    <div>🟢</div>
+                                </div>
+                                <div class="sub-panel-values">
+                                    <div>${fVol(modeData[modeData.length-1]?.volume || 0)}</div>
+                                    <div>${fVol(modeData.reduce((s,d)=>s+d.volume,0)/modeData.length)}</div>
+                                    <div>${volRat.toFixed(2)}x</div>
+                                </div>
+                                <div class="sub-panel-text">الفوليوم الذكي</div>
+                                <div class="sub-panel-bottom">
+                                    <div>شراء</div>
+                                    <div>💰</div>
+                                    <div>${buyPct}%</div>
+                                </div>
+                            </div>
+
+                            <div class="sub-panel orange">
+                                <div class="sub-panel-header">
+                                    <div>الدلتا</div>
+                                    <div>التغير</div>
+                                    <div>النسبة</div>
+                                    <div>🟡</div>
+                                </div>
+                                <div class="sub-panel-values">
+                                    <div>${fVol(deltaD)}</div>
+                                    <div>${changeSign}${change.toFixed(2)}</div>
+                                    <div>${changeSign}${changePct}%</div>
+                                </div>
+                                <div class="sub-panel-text">البروفايل الذكي</div>
+                                <div class="sub-panel-bottom">
+                                    <div>POC</div>
+                                    <div>🎯</div>
+                                    <div>${pocD.toFixed(2)}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="buying-power">
+                            <div class="bp-row">
+                                <div>💪</div>
+                                <div style="font-weight: 700;">القوة الشرائية</div>
+                                <div></div>
+                            </div>
+                            <div class="bp-conditions">
+                                <span class="bp-cond">${vvb.c1 ? '✅' : '❌'} POC</span>
+                                <span class="bp-cond">${vvb.c2 ? '✅' : '❌'} VWAP</span>
+                                <span class="bp-cond">${vvb.c6 ? '✅' : '❌'} VOL</span>
+                                <span class="bp-cond">${vvb.c10 ? '✅' : '❌'} DELTA</span>
+                                <span class="bp-cond">${buyPct >= 50 ? '✅' : '❌'} BUY%</span>
+                            </div>
+                        </div>
+
+                        <div class="smart-analyst" style="background: ${scoreColor};">
+                            <div class="sa-row">
+                                <div>🧠</div>
+                                <div style="font-weight: 700;">المحلل الذكي</div>
+                                <div></div>
+                            </div>
+                            <div class="sa-indicators">
+                                <span>النتيجة: ${vvb.score}/10</span>
+                                <span>|</span>
+                                <span>${vvb.verdict}</span>
+                                <span>|</span>
+                                <span>المخاطرة: ${vvb.score >= 8 ? 'منخفضة' : vvb.score >= 6 ? 'متوسطة' : 'عالية'}</span>
+                            </div>
+                            <div style="margin-top: 0.5rem; font-size: 0.85rem; text-align: center;">
+                                ${vvb.adv}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                container.innerHTML += card;
+            }
+
+            document.getElementById('summaryGreen').textContent = greenCount;
+            document.getElementById('summaryYellow').textContent = yellowCount;
+            document.getElementById('summaryRed').textContent = redCount;
+        }
+
+        function init() {
+            renderQuickChips();
+            renderCards();
+            updateLastUpdate();
+        }
+
+        // Check login status on page load
+        if(isLoggedIn()) {
+            showDashboard();
+        } else {
+            showLogin();
+        }
+    </script>
+</body>
+</html>
